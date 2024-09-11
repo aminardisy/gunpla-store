@@ -104,4 +104,38 @@ Fungsi: Template HTML adalah berkas yang digunakan untuk menampilkan data kepada
 Kaitan: Setelah view di views.py mengumpulkan data, view akan memanggil template HTML dan memberikan data tersebut untuk ditampilkan. Di dalam template HTML, data ini bisa diakses menggunakan sintaks Django Template Language (DTL), seperti {{ data }}.
 Alur Kerja: View mengirim data ke Template HTML → Template menampilkan data di halaman web.
 
+**Fungsi Git Untuk Pengembang**
+Git adalah sistem kontrol versi terdistribusi yang digunakan dalam pengembangan perangkat lunak untuk mengelola perubahan kode sumber secara efisien. Berikut adalah fungsi utama Git dalam pengembangan perangkat lunak:
 
+1. Pencatatan Versi Kode: Git memungkinkan pengembang untuk menyimpan riwayat perubahan pada kode, sehingga setiap perubahan dapat dilacak, di-revert, atau dibandingkan dengan versi sebelumnya.
+   
+2. Kolaborasi Tim: Git memungkinkan banyak pengembang untuk bekerja secara bersamaan di repositori yang sama tanpa mengganggu pekerjaan satu sama lain. Dengan fitur branch dan merge, mereka dapat menggabungkan kode dengan mudah.
+
+3. Branching: Git menyediakan kemampuan untuk membuat cabang (branch) dari kode utama (main/master), yang memungkinkan pengembangan fitur baru atau perbaikan bug dilakukan secara terpisah tanpa mengganggu kode stabil di cabang utama.
+
+4. Backup Terdistribusi: Karena repositori Git bersifat terdistribusi, setiap pengembang memiliki salinan penuh dari proyek, memberikan cadangan otomatis terhadap proyek tersebut.
+
+5. Manajemen Konflik: Ketika beberapa pengembang mengedit file yang sama, Git membantu mendeteksi dan memandu penyelesaian konflik penggabungan (merge conflicts) dalam kode.
+
+Dengan Git, pengembangan perangkat lunak menjadi lebih terorganisir, aman, dan memungkinkan kolaborasi yang lebih baik antara tim pengembang.
+**Menjawab pertanyaan: Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?**
+Dari saya pribadi, mungkin karena framework django relatif lebih mudah dipahami oleh pemula daripada framework yang lain
+
+**Menjawab pertanyaan: Mengapa model pada Django disebut sebagai ORM?**
+Model pada Django disebut sebagai **ORM (Object-Relational Mapping)** karena model berfungsi sebagai penghubung antara objek dalam kode Python dan tabel dalam database relasional. ORM memungkinkan pengembang untuk bekerja dengan data di database menggunakan objek Python tanpa perlu menulis query SQL secara langsung. Berikut penjelasan lebih rinci:
+
+1. **Object-Oriented**: Django ORM mengizinkan pengembang untuk memanipulasi data dalam database melalui objek Python. Setiap model di Django adalah sebuah class Python, dan setiap record di dalam tabel database adalah sebuah instance dari class tersebut.
+
+2. **Relational Mapping**: Tabel dalam database relasional (seperti PostgreSQL, MySQL, SQLite) dipetakan ke model Django. Setiap field dalam model berhubungan dengan kolom dalam tabel database. Misalnya, sebuah model `Product` dengan atribut `name`, `price`, dan `description` akan dipetakan ke tabel database dengan kolom yang sesuai.
+
+3. **Query Abstraction**: ORM menyediakan cara untuk menulis query database menggunakan bahasa Python. Dengan Django ORM, kita bisa melakukan operasi CRUD (Create, Read, Update, Delete) tanpa menulis query SQL mentah. Django ORM akan secara otomatis mengonversi operasi Python ke query SQL yang sesuai.
+
+   Contoh:
+   ```python
+   # Mengambil semua objek Product
+   products = Product.objects.all()
+   ```
+
+4. **Portabilitas**: Karena ORM mengabstraksikan query database, pengembang bisa berpindah-pindah antar database yang berbeda (PostgreSQL, MySQL, SQLite, dll.) tanpa perlu mengubah logika pengelolaan data di model atau query yang digunakan.
+
+Secara keseluruhan, Django ORM menyederhanakan interaksi dengan database relasional dan memungkinkan pengembang fokus pada logika bisnis tanpa terlalu banyak berurusan dengan detail teknis SQL.
