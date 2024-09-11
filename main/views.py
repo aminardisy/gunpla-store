@@ -13,4 +13,4 @@ def show_main(request):
     }
 
     return render(request, "main.html", context)
-# Create your views here.
+# Create your views here,.
