@@ -8,7 +8,7 @@ def show_main(request):
     gunplas = Gunpla.objects.all()
 
     context = {
-        'nama:': 'Ardi Syahputra Amin',
+        'nama': 'Ardi Syahputra Amin',
         'kelas': 'PBP B',
         'gunpla': gunplas
     }
