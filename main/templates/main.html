@@ -1,20 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>Gunpla store</h1>
 
-...
 <h5>Nama: </h5>
 <p>{{ nama }}<p>
+
 <h5>Kelas: </h5>
 <p>{{ kelas }}<p>
-<h5>Product Name: </h5>
-<p>{{ name }}<p>
-<h5>Price: </h5>
-<p>{{ price }}<p>
-<h5>Description: </h5>
-<p>{{ description }}<p>
-<h5>Size Ratio: </h5>
-<p>{{ size_ratio }}<p>
-<h5>Extended Parts: </h5>
-<p>{{ extensions }}<p>
-<h5>Notes: </h5>
-<p>{{ notes }}<p>
-...
+    ...
+    {% if not gunplas %}
+    <p>Belum ada data gunpla pada gunplastore.</p>
+    {% else %}
+    <table>
+      <tr>
+        <th>Gunpla Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Size ratio</th>
+        <th>Extensions</th>
+        <th>Notes</th>
+      </tr>
+    
+      {% comment %} Berikut cara memperlihatkan data gunpla di bawah baris ini 
+      {% endcomment %} 
+      {% for gunpla in gunplas %}
+      <tr>
+        <td>{{gunpla.name}}</td>
+        <td>{{gunpla.price}}</td>
+        <td>{{gunpla.description}}</td>
+        <td>{{gunpla.size_ratio}}</td>
+        <td>{{gunpla.extensions}}</td>
+        <td>{{gunpla.notes}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+    
+    <br />
+    
+    <a href="{% url 'main:create_gunpla' %}">
+      <button>Add New Gunpla</button>
+    </a>
+    {% endblock content %}
