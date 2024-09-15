@@ -1,5 +1,5 @@
 # Tugas 2
-###Checklist 1: Membuat Proyek Django Baru
+### Checklist 1: Membuat Proyek Django Baru
 1. Buat direktori baru gunpla-store
 2. Di dalam direktori tersebut aktifkan cirtual environment dengan menjalankan
    ```bash
