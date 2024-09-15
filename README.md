@@ -13,7 +13,7 @@
    ```bash
    python manage.py runserver
    ```
-**Checklist 2: Membuat aplikasi dengan nama main pada proyek tersebut.**
+### Checklist 2: Membuat aplikasi dengan nama main pada proyek tersebut.
 1. Pertama kita bisa menjalankan
    ```bash
    django-admin startproject mental_health_tracker .
@@ -26,10 +26,10 @@
 4. Tambahkan main ke aplikasi dasar di settings.py
 5. Buat direktori baru **templates** di dalam direktori main
 6. Di dalam templates buat main.html dan diisi dengan kode data diri
-**Checklist 3: Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib**
+### Checklist 3: Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib
 1. Di models.py di dalam aplikasi main, tambahkan class berupa produk yang akan ditampilkan dengan atribut name, price, description, dan atribut lainnya
 2. Lalu migrasikan model tersebut
-**Checklist 4: Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.**
+### Checklist 4: Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.
 1. Tambahkan fungsi show_main di bawah impor:
 ```python
 def show_main(request):
@@ -46,7 +46,7 @@ def show_main(request):
 
     return render(request, "main.html", context)
 ```
-**Checklist 5: Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py.**
+### Checklist 5: Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py.
 1. Buatlah berkas urls.py di dalam direktori main.
    Isi urls.py dengan kode berikut.
 ```python
@@ -76,13 +76,13 @@ urlpatterns = [
 ```
 5. Jalankan proyek Django dengan perintah python manage.py runserver
 6. Bukalah http://localhost:8000/ di browser untuk melihat halaman yang sudah  dibuat.
-**Checklist 6: Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.**
+### Checklist 6: Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.
 1. Ubah branch direktori ke master
 2. Lalu push ke pws dengan menjalankan
 ```bash
 git push pws master
 ```
-**Bagan**
+### Bagan
 ![image](https://github.com/user-attachments/assets/c1ac7dc2-3fb5-460c-9d96-207dca47cff2)
 1. urls.py (Routing)
 Fungsi: urls.py bertugas sebagai pengatur rute (routing) dari URL yang dimasukkan oleh pengguna ke aplikasi Django. Ia memetakan URL tertentu ke fungsi atau view yang sesuai di dalam views.py.
@@ -104,7 +104,7 @@ Fungsi: Template HTML adalah berkas yang digunakan untuk menampilkan data kepada
 Kaitan: Setelah view di views.py mengumpulkan data, view akan memanggil template HTML dan memberikan data tersebut untuk ditampilkan. Di dalam template HTML, data ini bisa diakses menggunakan sintaks Django Template Language (DTL), seperti {{ data }}.
 Alur Kerja: View mengirim data ke Template HTML → Template menampilkan data di halaman web.
 
-**Fungsi Git Untuk Pengembang**
+### Fungsi Git Untuk Pengembang
 Git adalah sistem kontrol versi terdistribusi yang digunakan dalam pengembangan perangkat lunak untuk mengelola perubahan kode sumber secara efisien. Berikut adalah fungsi utama Git dalam pengembangan perangkat lunak:
 
 1. Pencatatan Versi Kode: Git memungkinkan pengembang untuk menyimpan riwayat perubahan pada kode, sehingga setiap perubahan dapat dilacak, di-revert, atau dibandingkan dengan versi sebelumnya.
@@ -118,10 +118,10 @@ Git adalah sistem kontrol versi terdistribusi yang digunakan dalam pengembangan 
 5. Manajemen Konflik: Ketika beberapa pengembang mengedit file yang sama, Git membantu mendeteksi dan memandu penyelesaian konflik penggabungan (merge conflicts) dalam kode.
 
 Dengan Git, pengembangan perangkat lunak menjadi lebih terorganisir, aman, dan memungkinkan kolaborasi yang lebih baik antara tim pengembang.
-**Menjawab pertanyaan: Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?**
+### Menjawab pertanyaan: Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
 Dari saya pribadi, mungkin karena framework django relatif lebih mudah dipahami oleh pemula daripada framework yang lain
 
-**Menjawab pertanyaan: Mengapa model pada Django disebut sebagai ORM?**
+### Menjawab pertanyaan: Mengapa model pada Django disebut sebagai ORM?
 Model pada Django disebut sebagai **ORM (Object-Relational Mapping)** karena model berfungsi sebagai penghubung antara objek dalam kode Python dan tabel dalam database relasional. ORM memungkinkan pengembang untuk bekerja dengan data di database menggunakan objek Python tanpa perlu menulis query SQL secara langsung. Berikut penjelasan lebih rinci:
 
 1. **Object-Oriented**: Django ORM mengizinkan pengembang untuk memanipulasi data dalam database melalui objek Python. Setiap model di Django adalah sebuah class Python, dan setiap record di dalam tabel database adalah sebuah instance dari class tersebut.
