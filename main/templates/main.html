@@ -7,7 +7,7 @@
 
 <h5>Kelas: </h5>
 <p>{{ kelas }}<p>
-{% if not gunplas %}
+{% if not gunpla %}
 <p>Belum ada data gunpla pada gunplastore.</p>
 {% else %}
 <table>
@@ -22,7 +22,7 @@
 
   {% comment %} Berikut cara memperlihatkan data gunpla di bawah baris ini 
   {% endcomment %} 
-  {% for gunpla in gunplas %}
+  {% for gunpla in gunpla %}
   <tr>
     <td>{{gunpla.name}}</td>
     <td>{{gunpla.price}}</td>
