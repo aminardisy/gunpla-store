@@ -7,38 +7,37 @@
 
 <h5>Kelas: </h5>
 <p>{{ kelas }}<p>
-    ...
-    {% if not gunplas %}
-    <p>Belum ada data gunpla pada gunplastore.</p>
-    {% else %}
-    <table>
-      <tr>
-        <th>Gunpla Name</th>
-        <th>Price</th>
-        <th>Description</th>
-        <th>Size ratio</th>
-        <th>Extensions</th>
-        <th>Notes</th>
-      </tr>
-    
-      {% comment %} Berikut cara memperlihatkan data gunpla di bawah baris ini 
-      {% endcomment %} 
-      {% for gunpla in gunplas %}
-      <tr>
-        <td>{{gunpla.name}}</td>
-        <td>{{gunpla.price}}</td>
-        <td>{{gunpla.description}}</td>
-        <td>{{gunpla.size_ratio}}</td>
-        <td>{{gunpla.extensions}}</td>
-        <td>{{gunpla.notes}}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    {% endif %}
-    
-    <br />
-    
-    <a href="{% url 'main:create_gunpla' %}">
-      <button>Add New Gunpla</button>
-    </a>
-    {% endblock content %}
+{% if not gunplas %}
+<p>Belum ada data gunpla pada gunplastore.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Gunpla Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Size ratio</th>
+    <th>Extensions</th>
+    <th>Notes</th>
+  </tr>
+
+  {% comment %} Berikut cara memperlihatkan data gunpla di bawah baris ini 
+  {% endcomment %} 
+  {% for gunpla in gunplas %}
+  <tr>
+    <td>{{gunpla.name}}</td>
+    <td>{{gunpla.price}}</td>
+    <td>{{gunpla.description}}</td>
+    <td>{{gunpla.size_ratio}}</td>
+    <td>{{gunpla.extensions}}</td>
+    <td>{{gunpla.notes}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_gunpla' %}">
+  <button>Add New Gunpla</button>
+</a>
+{% endblock content %}
