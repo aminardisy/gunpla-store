@@ -240,4 +240,104 @@ def create_gunpla(request):
     context = {'form': form}
     return render(request, "create_gunpla.html", context)
 ```
-4. tambahkan ```gunpla:gunplas ``` ke dalam context di fungsi show main
+4. tambahkan ```'gunpla':gunplas ``` ke dalam context di fungsi show main.
+5. Import fungsi yang ada di nomor 3 ke urls.py dan tambahkan path url-nya.
+6. Buat berkas HTML baru dengan nama create_gunpla.html pada direktori main/templates. Isi create_gunpla.html dengan kode berikut.
+```python
+{% extends 'base.html' %} 
+{% block content %}
+<h1>Add New Gunpla</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+    <tr>
+      <td></td>
+      <td>
+        <input type="submit" value="Add Gunpla" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}
+```
+7. Di dalam main.html, tambahkan kode berikut di dalam block content untuk menampilkan data gunpla.
+```python
+{% if not gunpla %}
+<p>Belum ada data gunpla pada gunplastore.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Gunpla Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Size ratio</th>
+    <th>Extensions</th>
+    <th>Notes</th>
+  </tr>
+
+  {% comment %} Berikut cara memperlihatkan data gunpla di bawah baris ini 
+  {% endcomment %} 
+  {% for gunpla in gunpla %}
+  <tr>
+    <td>{{gunpla.name}}</td>
+    <td>{{gunpla.price}}</td>
+    <td>{{gunpla.description}}</td>
+    <td>{{gunpla.size_ratio}}</td>
+    <td>{{gunpla.extensions}}</td>
+    <td>{{gunpla.notes}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_gunpla' %}">
+  <button>Add New Gunpla</button>
+</a>
+```
+### Langkah -langkah untuk menambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID.
+1. Tambahkan 4 fungsi ini ke views.py
+```python
+def show_xml(request):
+    data = Gunpla.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_xml_by_id(request, id):
+    data = Gunpla.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Gunpla.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_json_by_id(request, id):
+    data = Gunpla.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+2. Lalu import keempat fungsi tersebut ke urls.py.
+```python
+from main.views import show_main, create_gunpla, show_xml, show_json, show_xml_by_id, show_json_by_id
+```
+### Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2.
+Tambahkan kode ini ke urlpatterns di urls.py.
+```python
+path('xml/', show_xml, name='show_xml'),
+path('json/', show_json, name='show_json'),
+path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
+path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
+```
+### Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md.
+1. xml
+   ![image](https://github.com/user-attachments/assets/c727909f-2556-487d-8384-38e02a15b4c6)
+2. xml/[id]
+   ![image](https://github.com/user-attachments/assets/16b5d059-d4bd-4371-95b7-87dc7f8ca02a)
+3. json
+   ![image](https://github.com/user-attachments/assets/078f6841-5af6-4d51-8d07-9330048b6471)
+4. json/[id]
+   ![image](https://github.com/user-attachments/assets/39ef32f3-a236-4fd6-9fa1-4d8b40d04b0b)
+
+
