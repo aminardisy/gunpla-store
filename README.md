@@ -218,7 +218,7 @@ Menambahkan `csrf_token` ke dalam form Django sangat penting untuk mencegah sera
 
 ### Langkah-langkah membuat input form untuk menambahkan objek model pada app sebelumnya.
 1. Buat berkas baru pada direktori main dengan nama forms.py untuk membuat struktur form yang dapat menerima data baru. Tambahkan kode ini ke forms.py
-   ```python
+```python
 from django.forms import ModelForm
 from main.models import Gunpla
 
@@ -226,7 +226,7 @@ class GunplaForm(ModelForm):
     class Meta:
         model = Gunpla
         fields = ["name", "price", "description", "size_ratio", "extensions", "notes"]
-   ```
+```
 2. Import GunplaForm dan Gunpla ke views.py dan tambahkan redirect di import render.
 3. Tambahkan fungsi dibawah untuk menghasilkan form yang dapat menambahkan data gunpla secara otomatis.
 ```python
@@ -240,4 +240,4 @@ def create_gunpla(request):
     context = {'form': form}
     return render(request, "create_gunpla.html", context)
 ```
-4. tambahkan ```bash gunpla:gunplas ``` ke dalam context di fungsi show main
+4. tambahkan ```gunpla:gunplas ``` ke dalam context di fungsi show main
