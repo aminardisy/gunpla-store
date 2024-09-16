@@ -215,3 +215,29 @@ Misalkan ada situs yang memungkinkan pengguna untuk mengubah kata sandi mereka m
 ### Kesimpulan
 
 Menambahkan `csrf_token` ke dalam form Django sangat penting untuk mencegah serangan CSRF. Tanpa mekanisme ini, aplikasi kita rentan terhadap permintaan berbahaya yang dapat merusak data, mencuri informasi, atau menjalankan aksi tidak sah lainnya. Django menyediakan mekanisme `csrf_token` secara otomatis sebagai bagian dari keamanan aplikasi web, sehingga setiap form POST yang dikirimkan oleh pengguna terlindungi dari ancaman ini.
+
+### Langkah-langkah membuat input form untuk menambahkan objek model pada app sebelumnya.
+1. Buat berkas baru pada direktori main dengan nama forms.py untuk membuat struktur form yang dapat menerima data baru. Tambahkan kode ini ke forms.py
+   ```python
+from django.forms import ModelForm
+from main.models import Gunpla
+
+class GunplaForm(ModelForm):
+    class Meta:
+        model = Gunpla
+        fields = ["name", "price", "description", "size_ratio", "extensions", "notes"]
+   ```
+2. Import GunplaForm dan Gunpla ke views.py dan tambahkan redirect di import render.
+3. Tambahkan fungsi dibawah untuk menghasilkan form yang dapat menambahkan data gunpla secara otomatis.
+```python
+def create_gunpla(request):
+    form = GunplaForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_gunpla.html", context)
+```
+4. tambahkan ```bash gunpla:gunplas ``` ke dalam context di fungsi show main
