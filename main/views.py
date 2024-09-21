@@ -18,7 +18,7 @@ def show_main(request):
         'nama': request.user.username,
         'kelas': 'PBP B',
         'gunpla': gunplas,
-        'last_login': request.COOKIES['last_login', 'Never'],
+        'last_login': request.COOKIES['last_login'],
     }
 
     return render(request, "main.html", context)
