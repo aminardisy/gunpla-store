@@ -140,6 +140,8 @@ Model pada Django disebut sebagai **ORM (Object-Relational Mapping)** karena mod
 
 Secara keseluruhan, Django ORM menyederhanakan interaksi dengan database relasional dan memungkinkan pengembang fokus pada logika bisnis tanpa terlalu banyak berurusan dengan detail teknis SQL.
 
+# Tugas 3
+
 ### Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 Data delivery dalam pengimplementasian sebuah platform sangat penting karena beberapa alasan berikut:
 
@@ -340,4 +342,214 @@ path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
 4. json/[id]
    ![image](https://github.com/user-attachments/assets/39ef32f3-a236-4fd6-9fa1-4d8b40d04b0b)
 
+# Tugas 4
+### Apa perbedaan antara HttpResponseRedirect() dan redirect()?
+HttpResponseRedirect() dan redirect() adalah dua cara untuk melakukan pengalihan (redirect) pada URL di Django, tetapi keduanya memiliki beberapa perbedaan dalam cara penggunaannya:
+HttpResponseRedirect():
+- Merupakan class yang ada di django.http.
+- Mengembalikan response dengan status HTTP 302 yang menunjukkan bahwa halaman telah pindah ke lokasi baru.
+- Digunakan dengan cara memberikan URL sebagai argumen, misalnya HttpResponseRedirect('/new-url/').
+- Memerlukan URL absolut atau relatif sebagai parameter.
 
+redirect():
+- Merupakan fungsi bawaan dari django.shortcuts.
+- Merupakan cara yang lebih ringkas dan lebih mudah dibaca untuk mengarahkan ulang pengguna.
+- Mendukung beberapa jenis parameter: URL string, nama view, atau bahkan objek model.
+- Bisa digunakan dengan URL absolut atau relatif, nama dari view yang diinginkan (beserta argumen view), atau bahkan objek model yang memiliki metode get_absolute_url().
+- Lebih fleksibel dan direkomendasikan untuk digunakan dalam sebagian besar kasus.
+
+### Jelaskan cara kerja penghubungan model Gunpla dengan User!
+Penghubungan model Gunpla dengan model User di Django bekerja dengan menggunakan ForeignKey, yang merupakan salah satu tipe relasi dalam database relasional. Relasi ini memungkinkan kita untuk mengaitkan setiap entri gunpla (Gunpla) dengan pengguna (User) yang membuatnya, sehingga setiap entri gunpla terhubung dengan pengguna yang spesifik.
+
+### Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut?
+Authentication (Autentikasi):
+- Proses memverifikasi identitas pengguna, memastikan bahwa pengguna adalah siapa yang mereka klaim.
+- Terlibat dalam proses login, di mana pengguna memasukkan kredensial seperti username dan password.
+- Menentukan siapa pengguna tersebut, tetapi tidak memberikan akses langsung ke sumber daya atau data.
+- Contoh: Memasukkan username dan password untuk masuk ke sebuah akun.
+
+Authorization (Otorisasi):
+- Proses menentukan hak akses pengguna terhadap sumber daya tertentu setelah berhasil terautentikasi.
+- Menentukan apa yang diizinkan atau tidak diizinkan untuk dilakukan oleh pengguna dalam sistem.
+- Berfokus pada apa yang bisa dilakukan pengguna, seperti mengakses data tertentu, membuat perubahan, atau menjalankan fungsi spesifik.
+- Contoh: Setelah login, hanya pengguna dengan peran admin yang dapat mengakses halaman pengaturan.
+
+### Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+- Django mengingat pengguna yang telah login dengan menggunakan session dan cookies. Setelah pengguna berhasil login, Django membuat session yang disimpan di server dan mengirimkan cookie khusus kepada browser pengguna untuk melacak session tersebut. 
+- Cookies memiliki beberapa kegunaan lain, seperti:
+   1. Menyimpan Preferensi Pengguna:
+      Cookies digunakan untuk menyimpan preferensi pengguna, seperti tema, bahasa, atau pengaturan tampilan, yang membuat pengalaman pengguna lebih personal.
+   2. Pelacakan Pengguna (Tracking):
+      Cookies sering digunakan untuk melacak aktivitas pengguna di sebuah situs web, seperti item yang ditambahkan ke keranjang belanja atau halaman yang dilihat.
+   3. Penyimpanan Data Sementara:
+      Cookies dapat menyimpan data sementara yang diperlukan antar halaman, seperti status form, progress kuis, atau data yang perlu disimpan sementara sebelum dikirimkan ke server.
+   4. Autentikasi dan Keamanan:
+      Selain session management, cookies juga digunakan untuk token autentikasi seperti JWT (JSON Web Token) untuk mengelola otentikasi yang lebih kompleks pada aplikasi modern.
+  Namun, tidak semua cookies aman digunakan.
+
+### Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna untuk mengakses aplikasi sebelumnya dengan lancar.
+1. Menambahkan import UserCreationForm dan messages pada views.py.
+2. Menambahkan fungsi register ke views.py.
+```python
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+```
+3. Membuat file register.html untuk menampilkan halaman login.
+```python
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Register</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class="login">
+  <h1>Register</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+      <tr>
+        <td></td>
+        <td><input type="submit" name="submit" value="Daftar" /></td>
+      </tr>
+    </table>
+  </form>
+
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+{% endblock content %}
+```
+4. Tambahkan path ke urls.py
+5. Menambahkan import authenticate, login, AuthenticationForm, dan logout.
+6. Lalu tambahkan 2 kode ini ke views.py.
+```python
+def login_user(request):
+   if request.method == 'POST':
+      form = AuthenticationForm(data=request.POST)
+
+      if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+
+   else:
+      form = AuthenticationForm(request)
+   context = {'form': form}
+   return render(request, 'login.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+```
+7. Setelah itu buat file login.html.
+```python
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="login">
+  <h1>Login</h1>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+      <tr>
+        <td></td>
+        <td><input class="btn login_btn" type="submit" value="Login" /></td>
+      </tr>
+    </table>
+  </form>
+
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %} Don't have an account yet?
+  <a href="{% url 'main:register' %}">Register Now</a>
+</div>
+
+{% endblock content %}
+```
+8. Lalu tambahkan path-path url yang dibutuhkan ke urls.py
+### Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+Saya lakukan dengan membuat akun di form register pada program dan mengisi field-field yang dibutuhkan
+
+### Menghubungkan model Product dengan User.
+1. Import model User ke models.py
+2. Menambahkan potongan kode
+```python
+ user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+   ke model Gunpla yang sudah dibuat
+3. Mengubah fungsi create_gunpla agar menyimpan objek yang sudah dibuat dan menghubungkannya ke User.
+```python
+def create_gunpla(request):
+    form = GunplaForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        gunpla = form.save(commit=False)
+        gunpla.user = request.user
+        gunpla.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_gunpla.html", context)
+```
+4. Mengubah nilai 'name' pada context menjadi ```bash 'name': request.user.username, ```.
+5. Tambahkan import os pada settings.py dan mengganti DEBUG menjadi ```bash PRODUCTION = os.getenv("PRODUCTION", False)
+DEBUG = not PRODUCTION ```.
+6. Migrate model.
+###  Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
+1. Menambahkan import HttpResponseRedirect, reverse, dan datetime pada views.py
+2. Menambahkan cookie yang bernama last_login untuk melihat kapan terakhir kali pengguna melakukan login. Caranya adalah dengan mengganti kode yang ada pada blok if form.is_valid() menjadi potongan kode berikut.
+```python
+if form.is_valid():
+    user = form.get_user()
+    login(request, user)
+    response = HttpResponseRedirect(reverse("main:show_main"))
+    response.set_cookie('last_login', str(datetime.datetime.now()))
+    return response
+```
+3. Menambahkan potongan kode 'last_login': request.COOKIES['last_login'] ke dalam variabel context.
+```python
+def show_main(request):
+    gunplas = Gunpla.objects.filter(user=request.user)
+
+    context = {
+        'nama': request.user.username,
+        'kelas': 'PBP B',
+        'gunpla': gunplas,
+        'last_login': request.COOKIES['last_login'],
+    }
+
+    return render(request, "main.html", context)
+```
+4. Tambahkan potongan kode ini ke main.html untuk menampilkan data login terakhir.
+```python
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+```
