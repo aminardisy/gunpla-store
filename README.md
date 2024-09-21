@@ -169,7 +169,7 @@ Fungsi dari `is_valid()` pada form Django adalah untuk memeriksa apakah data yan
 
 2. **Pembersihan Data (Data Cleaning)**: Jika data dianggap valid, Django juga membersihkan atau memproses data tersebut sebelum menyimpannya dalam form. Data yang telah divalidasi dan dibersihkan ini kemudian bisa diakses melalui atribut `form.cleaned_data`. Atribut ini memberikan data dalam format yang telah disesuaikan dengan tipe data yang benar untuk digunakan dalam logika bisnis atau disimpan ke dalam database.
 
-# Mengapa Kita Membutuhkan `is_valid()`?
+### Mengapa Kita Membutuhkan `is_valid()`?
 
 1. **Menghindari Error di Server**: Memastikan bahwa data yang dikirimkan valid sangat penting untuk menghindari terjadinya error ketika aplikasi mencoba memproses atau menyimpan data yang salah. Tanpa validasi, data yang tidak sesuai dapat menyebabkan crash atau masalah di server.
 
