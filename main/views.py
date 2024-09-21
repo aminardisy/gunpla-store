@@ -29,7 +29,7 @@ def create_gunpla(request):
     if form.is_valid() and request.method == "POST":
         gunpla = form.save(commit=False)
         gunpla.user = request.user
-        gunpla.save
+        gunpla.save()
         return redirect('main:show_main')
 
     context = {'form': form}
