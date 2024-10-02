@@ -24,7 +24,7 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def create_gunpla(request):
-    form = GunplaForm(request.POST or None)
+    form = GunplaForm(request.POST, request.FILES)
 
     if form.is_valid() and request.method == "POST":
         gunpla = form.save(commit=False)
@@ -34,6 +34,26 @@ def create_gunpla(request):
 
     context = {'form': form}
     return render(request, "create_gunpla.html", context)
+
+def edit_gunpla(request, id):
+    gunpla = Gunpla.objects.get(pk = id)
+
+    form = GunplaForm(request.POST or None, instance=gunpla)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_gunpla.html", context)
+
+def delete_gunpla(request, id):
+    # Get mood berdasarkan id
+    gunpla = Gunpla.objects.get(pk = id)
+    # Hapus mood
+    gunpla.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
 
 def show_xml(request):
     data = Gunpla.objects.all()
