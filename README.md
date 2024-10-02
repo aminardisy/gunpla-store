@@ -553,3 +553,135 @@ def show_main(request):
 ```python
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 ```
+# Tugas 5
+### Implementasikan fungsi untuk menghapus dan mengedit product.
+1. Buat fungsi edit_mood di views.py
+```python
+def edit_gunpla(request, id):
+    gunpla = Gunpla.objects.get(pk = id)
+
+    form = GunplaForm(request.POST or None, instance=gunpla)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_gunpla.html", context)
+```
+2. Tambahkan import ke views.py
+3. Buatlah berkas HTML baru dengan nama edit_gundam.html pada subdirektori main/templates.
+```python
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>Edit Mood</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Edit Gundam"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+4. Import dan tambahkan path fungsi yang sudah dibuat ke urls.py.
+5. Tambahkan potongan kode untuk manampilkan tombol edit.
+### Kustomisasi desain pada template HTML yang telah dibuat pada tugas-tugas sebelumnya menggunakan CSS atau CSS framework (seperti Bootstrap, Tailwind, Bulma) dengan ketentuan sebagai berikut:
+Karena ini pertama kalinya saya mendesign web, design web yang ditampilkan mengacu pada template yang disediakan.
+#### Kustomisasi halaman login, register, dan tambah product semenarik mungkin.
+##### Menampilkan Pesan dan Gambar Jika Belum Ada Produk.
+1. Tambahkan logika untuk mengecek produk yang tersimpan
+2. Jika tidak ada produk, tampilkan pesan "Belum ada data Gunpla dalam koleksi".
+##### Menampilkan Produk dalam Bentuk Card
+1. Gunakan Tailwind CSS untuk mendesain tampilan card.
+2. Ubah bagian template yang menampilkan produk sehingga setiap produk ditampilkan dalam card yang menarik dan tidak sama dengan tutorial.
+3. Card mencakupi:
+   1. Gambar Produk (masih belum selesai)
+   2. Nama Produk
+   3. Deskripsi produk
+   4. Harga Produk
+   5. Dua tombol untuk edit dan hapus produk
+##### Membuat Tombol Edit dan Delete Produk
+- Tambahkan dua tombol pada setiap card produk:
+  - Tombol Edit: Mengarahkan pengguna ke halaman pengeditan produk (edit_gundam).
+  - Tombol Hapus: Mengarahkan pengguna ke halaman konfirmasi penghapusan (delete_gundam).
+##### Membuat Navbar yang Responsif
+1. Gunakan Tailwind CSS untuk membuat navbar yang responsif.
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Urutan prioritas selector dari yang terendah ke yang tertinggi adalah sebagai berikut:
+1. Selector Tag / Elemen (e.g., h1, p).
+2. Selector Class (e.g., .class-name).
+3. Selector Atribut (e.g., [type='text']).
+4. Selector Pseudo-class (e.g., :hover, :focus).
+5. Selector ID (e.g., #id-name).
+6. Inline CSS (e.g., <div style="color: red;">).
+7. !important rule: Aturan !important akan mengesampingkan semua prioritas lain dan akan diterapkan pada elemen, terlepas dari specificity.
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+Responsive Design adalah pendekatan desain web yang memastikan tampilan dan fungsionalitas situs dapat beradaptasi dengan baik pada berbagai perangkat dan ukuran layar, seperti desktop, tablet, dan ponsel. Ini sangat penting karena pengguna mengakses website dari perangkat yang beragam dengan resolusi layar yang berbeda-beda.
+
+Alasan Mengapa Responsive Design Penting:
+1. Meningkatkan Pengalaman Pengguna (User Experience): Layout yang responsif memberikan kemudahan navigasi dan keterbacaan konten.
+2. SEO yang Lebih Baik: Mesin pencari seperti Google memberi peringkat lebih tinggi pada situs yang responsif.
+3. Meningkatkan Aksesibilitas: Memastikan bahwa situs dapat diakses oleh berbagai pengguna dengan perangkat yang berbeda.
+4. Penggunaan Sumber Daya Lebih Efisien: Menghindari pembuatan beberapa versi situs untuk perangkat berbeda.
+
+Contoh:
+- Situs dengan Responsive Design: https://www.apple.com
+   Desain situs Apple akan beradaptasi sempurna ketika dibuka di ponsel, tablet, dan desktop. Ukuran gambar, tata letak        konten, dan menu berubah sesuai dengan perangkat.
+- Situs Tanpa Responsive Design: http://example.com
+   Pada situs tanpa responsivitas, elemen seperti gambar, teks, dan layout akan terlihat sama pada semua perangkat,            menyebabkan tampilan yang tidak rapi, konten yang terpotong, dan interaksi yang sulit pada layar kecil.
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+Ketiga properti ini digunakan untuk mengatur ruang di sekitar dan di dalam elemen HTML. Berikut adalah penjelasan perbedaannya:
+
+1. Margin:
+- Mengatur ruang di luar border dari elemen.
+- Membuat jarak antara elemen yang berdekatan.
+Contoh penggunaan:
+```css
+Salin kode
+.box {
+    margin: 20px;
+}
+```
+2. Border:
+- Merupakan bingkai di sekitar padding dan konten elemen.
+- Border dapat diatur ketebalan, jenis garis, dan warnanya.
+Contoh penggunaan:
+```css
+Salin kode
+.box {
+    border: 2px solid black;
+}
+```
+3. Padding:
+- Mengatur ruang di dalam border, tetapi di luar konten.
+- Memberikan jarak antara border dengan teks atau konten di dalam elemen.
+Contoh penggunaan:
+```css
+Salin kode
+.box {
+    padding: 10px;
+}
+```
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+1. Flexbox (Flexible Box Layout):
+Flexbox digunakan untuk membuat layout yang fleksibel dan dapat menyesuaikan dengan ukuran konten dan ruang yang tersedia.
+Kegunaan:
+- Mengatur tata letak baris atau kolom dari elemen.
+- Mengatur posisi elemen dengan cepat, termasuk perataan vertikal dan horizontal.
+2. Grid Layout:
+Grid layout adalah sistem tata letak berbasis grid dua dimensi yang memungkinkan Anda untuk membuat tata letak yang lebih kompleks dengan baris dan kolom.
+Kegunaan:
+- Membagi halaman menjadi grid dengan baris dan kolom.
+- Memudahkan pengaturan layout yang rumit, seperti dashboard atau halaman dengan beberapa section.
