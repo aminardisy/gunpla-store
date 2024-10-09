@@ -685,3 +685,160 @@ Grid layout adalah sistem tata letak berbasis grid dua dimensi yang memungkinkan
 Kegunaan:
 - Membagi halaman menjadi grid dengan baris dan kolom.
 - Memudahkan pengaturan layout yang rumit, seperti dashboard atau halaman dengan beberapa section.
+
+# Tugas 6
+### Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+JavaScript memiliki berbagai manfaat dalam pengembangan aplikasi web, antara lain:
+- Interaktivitas: JavaScript memungkinkan pengembang menambahkan elemen interaktif pada halaman web, seperti animasi, dropdown menu, validasi form di sisi klien, dan lain-lain, yang membuat halaman lebih dinamis dan interaktif.
+- Manipulasi DOM: Dengan JavaScript, pengembang dapat memodifikasi elemen-elemen pada halaman web secara langsung, misalnya mengubah gaya elemen, menambahkan konten baru, atau menghapus elemen.
+- Komunikasi Asinkron: JavaScript memungkinkan pengembang menggunakan teknologi seperti AJAX untuk berkomunikasi dengan server secara asinkron tanpa perlu me-refresh halaman, sehingga pengalaman pengguna menjadi lebih mulus.
+- Pengembangan Aplikasi Web Front-End dan Back-End: Dengan perkembangan framework seperti Node.js, JavaScript kini juga dapat digunakan untuk pengembangan sisi server, sehingga memungkinkan penggunaan satu bahasa pemrograman untuk keseluruhan aplikasi (full-stack).
+- Mendukung Single Page Application (SPA): JavaScript digunakan dalam framework modern seperti React, Angular, dan Vue untuk membangun aplikasi web yang responsif dan berbasis SPA.
+
+### Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+Ketika kita menggunakan fetch() untuk mengambil data dari server, await digunakan untuk menunggu respons dari server sebelum melanjutkan ke baris kode berikutnya. Fungsinya adalah untuk:
+- Membuat kode lebih mudah dibaca dan dikelola: Dengan await, kita dapat menulis kode asinkron dengan cara yang terlihat seperti kode sinkron, sehingga lebih mudah dipahami.
+- Menangani Data Respons secara Tepat: await memastikan bahwa respons dari fetch() telah diterima sepenuhnya sebelum kita mencoba mengakses hasilnya, misalnya membaca JSON dari respons.
+Jika kita tidak menggunakan await, maka fetch() akan mengembalikan promise tanpa menunggu respons dari server selesai. Akibatnya, jika kita mencoba menggunakan hasil fetch() tersebut (misalnya response.json()), kita akan mengalami kesalahan karena kita mencoba mengakses nilai yang belum ada.
+
+### Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST
+CSRF (Cross-Site Request Forgery) adalah serangan yang mengeksploitasi otentikasi pengguna untuk menjalankan tindakan tak diinginkan di sisi server. Dalam Django, decorator @csrf_exempt digunakan untuk menonaktifkan proteksi CSRF pada view tertentu. Kita perlu menggunakan @csrf_exempt pada view yang digunakan untuk AJAX POST ketika:
+- Token CSRF Tidak Dikirimkan Secara Benar: Ketika permintaan AJAX POST tidak menyertakan token CSRF yang valid atau saat kita tidak ingin menambahkannya di sisi klien, Django akan memblokir permintaan tersebut karena dianggap berbahaya.
+- Menghindari Error: Jika kita tidak menggunakan @csrf_exempt dan AJAX POST tidak menyertakan token CSRF yang benar, Django akan membalas dengan kesalahan "Forbidden (403)", yang menyebabkan request gagal.
+Namun, penggunaan @csrf_exempt harus dilakukan dengan sangat hati-hati, karena menonaktifkan proteksi CSRF dapat membuat aplikasi lebih rentan terhadap serangan CSRF.
+
+### Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+Pembersihan data input pengguna di backend penting dilakukan meskipun validasi di frontend sudah ada karena:
+- Keamanan: Validasi di frontend mudah diabaikan oleh pengguna yang mencoba menyerang aplikasi, misalnya dengan memodifikasi kode JavaScript atau mengirimkan permintaan langsung ke server menggunakan alat seperti Postman.
+- Integritas Data: Dengan melakukan pembersihan data di backend, kita memastikan bahwa semua data yang masuk ke dalam sistem memenuhi standar yang telah ditetapkan, terlepas dari bagaimana data tersebut dikirimkan.
+- Single Source of Truth: Backend adalah satu-satunya tempat di mana validasi dapat dipastikan selalu berjalan. Validasi di frontend hanya berfungsi sebagai lapisan tambahan untuk meningkatkan UX, tetapi backend adalah pengendali utama dari integritas data.
+- Mengurangi Kerentanan Terhadap Manipulasi Data: Tanpa pembersihan data di backend, aplikasi akan rentan terhadap serangan injeksi, XSS (Cross-Site Scripting), dan serangan-serangan lainnya yang dapat dieksploitasi dari input pengguna yang tidak aman.
+Oleh karena itu, validasi di frontend tidak cukup untuk menjamin keamanan dan keandalan data—pembersihan data di backend tetap diperlukan.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+#### AJAX GET
+1. Ubahlah kode cards data mood agar dapat mendukung AJAX GET dengan menambahkan kode berikut
+```python
+   async function refreshGunplas() {
+    document.getElementById("gunpla_cards").innerHTML = "";
+    document.getElementById("gunpla_cards").className = "";
+    const gunplas = await getGunplas();
+    let htmlString = "";
+    let classNameString = "";
+
+    if (gunplas.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/sedih-banget.png' %}" alt="No Product :[" class="w-32 h-32 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">Belum ada data Gunpla dalam koleksi.</p>
+            </div>
+        `;
+    }
+    else {
+        classNameString = "columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full"
+        gunplas.forEach((item) => {
+            htmlString += `
+            <div class="relative break-inside-avoid">
+                <div class="absolute top-2 z-10 left-1/2 -translate-x-1/2 flex items-center -space-x-2">
+                </div>
+                <div class="relative top-5 bg-gray-800 shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col border-2 border-yellow-600 hover:rotate-0 transition-transform duration-300">
+                  <div class="bg-gray-700 text-gray-200 p-4 rounded-t-lg border-b-2 border-yellow-600">
+                    <img src="{{ gunpla.image.url }}" alt="{{ gunpla.name }}" class="w-full h-48 object-cover rounded-t-lg mb-2"> <!-- Menambahkan Gambar -->
+                    <h3 class="font-bold text-xl mb-2 font-orbitron">{{ gunpla.name }}</h3>
+                    <p class="text-gray-400">Price: ${item.fields.price}</p>
+                  </div>
+                  <div class="p-4">
+                    <p class="font-semibold text-lg mb-2">Description</p>
+                    <p class="text-gray-300 mb-2">${item.fields.description}</p>
+                    <div class="mt-4">
+                      <p class="text-gray-300 font-semibold mb-2">Size Ratio</p>
+                      <p class="text-gray-400">${item.fields.size_ratio}</p>
+                    </div>
+                    <div class="mt-4">
+                      <p class="text-gray-300 font-semibold mb-2">Extensions</p>
+                      <p class="text-gray-400">${item.fields.extensions}</p>
+                    </div>
+                    <div class="mt-4">
+                      <p class="text-gray-300 font-semibold mb-2">Notes</p>
+                      <p class="text-gray-400">${item.fields.notes}</p>
+                    </div>
+                    <div class="mt-4">
+                      <p class="text-gray-300 font-semibold mb-2">Image</p>
+                      <p class="text-gray-400">${item.fields.image}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="absolute top-0 -right-4 flex space-x-1">
+                  <a href="/edit-gunpla/${item.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                  </a>
+                  <a href="/delete/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            `;
+        });
+    }
+    document.getElementById("gunpla_cards").className = classNameString;
+    document.getElementById("gunpla_cards").innerHTML = htmlString;
+}
+  }
+```
+2. Lakukan pengambilan data mood menggunakan AJAX GET. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in dengan mengimplementasikan kdoe berikut di views.py.
+```python
+ async function getGunplas(){
+      return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+  }
+```
+#### AJAX POST
+1.  Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan gunpla dengan mengimplementasikan kode berikut.
+```python
+   <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+      Add New Gunpla by AJAX
+    </button>
+```
+2. Buatlah fungsi view baru untuk menambahkan gunpla baru ke dalam basis data dengan mengimplementasikan kode berikut.
+```python
+@csrf_exempt
+@require_POST
+def add_gunpla_ajax(request):
+    user = request.user
+    name = request.POST.get("name")
+    image = request.POST.get("image")
+    price = request.POST.get("price")
+    description = request.POST.get("description")
+    size_ratio = request.POST.get("size_ratio")
+    extensions = request.POST.get("extensions")
+    notes = request.POST.get("notes")
+
+    new_Gunpla = Gunpla(name=name, price=price, description=description, size_ratio=size_ratio, extensions=extensions, notes=notes, user=user, image=image)
+    new_Gunpla.save()
+    
+    return HttpResponse(b"CREATED", status=201)
+```
+3.  Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru dibuat dengan menambah path berikut.
+```python
+path('create-gunpla-ajax', add_gunpla_ajax, name='add_gunpla_ajax'),
+```
+4. Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/ dengan mengimport fungsi add_gunpla_ajax ke views.py
+5. Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar gunpla terbaru tanpa reload halaman utama secara keseluruhan dengan menambahkan kode berikut
+```python
+function addGunpla() {
+    fetch("{% url 'main:add_gunpla_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#gunplaEntryForm')),
+    })
+    .then(response => refreshGunplas())
+
+    document.getElementById("gunplaEntryForm").reset(); 
+    document.querySelector("[data-modal-toggle='crudModal']").click();
+
+    return false;
+  }
+```
