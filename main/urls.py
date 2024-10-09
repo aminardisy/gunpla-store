@@ -1,6 +1,6 @@
 from django.urls import path
 from main.views import register, login_user, logout_user
-from main.views import show_main, create_gunpla, edit_gunpla, delete_gunpla
+from main.views import show_main, create_gunpla, edit_gunpla, delete_gunpla, add_gunpla_ajax
 from main.views import show_xml, show_json, show_xml_by_id, show_json_by_id
 from . import views
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('edit-gunpla/<uuid:id>', edit_gunpla, name='edit_gunpla'),
     path('delete/<uuid:id>', delete_gunpla, name='delete_gunpla'), 
+    path('create-gunpla-ajax', add_gunpla_ajax, name='add_gunpla_ajax'),
 ]
